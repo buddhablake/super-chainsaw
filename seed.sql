@@ -6,10 +6,10 @@ CREATE TABLE snippets (
   id SERIAL,
   title TEXT,
   author TEXT,
-  code TEXT,
+  snippet TEXT,
   description TEXT
 );
-INSERT INTO snippets (title, author, code, description)
+INSERT INTO snippets (title, author, snippet, description)
 VALUES (
     'HTML w/ React CDNs',
     'T. Clay',
