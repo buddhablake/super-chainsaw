@@ -16,5 +16,8 @@ if($_REQUEST['action'] === 'index'){
   $updated_snippet = new Snippet($_REQUEST['id'], $body_object->title, $body_object->author, $body_object->description, $body_object->snippet);
   $all_snippets = Snippets::update($updated_snippet);
   echo json_encode($all_snippets);
+} elseif($_REQUEST['action'] === 'delete'){
+  $all_snippets = Snippets::delete($_REQUEST['id']);
+  echo json_encode($all_snippets);
 }
  ?>
