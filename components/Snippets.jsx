@@ -1,7 +1,9 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
+    this.snippet = this.props.snippet;
     this.snippets = this.props.snippets;
+    this.deleteSnippet = this.props.deleteSnippet;
   }
 
   formatCode = (snippet) => {
@@ -15,21 +17,22 @@ class SnippetCard extends React.Component {
   };
 
   render = () => {
-    const { snippets } = this;
+    const { snippets, deleteSnippet, snippet } = this;
     return (
-      <div className="container grid">
-        {snippets.map((snippet) => (
-          <div key={snippet.id}>
-            <div>
-              <h4>{snippet.title}</h4>
-              <h5>{snippet.author}</h5>
-            </div>
-            <p>{snippet.description}</p>
-            <pre className="prettyprint">
-              {this.formatCode(snippet.snippet)}
-            </pre>
-          </div>
-        ))}
+      <div key={snippet.id} className="snippet">
+        <div>
+          <h4>{snippet.title}</h4>
+          <h5>{snippet.author}</h5>
+        </div>
+        <p>{snippet.description}</p>
+        <pre className="prettyprint">{this.formatCode(snippet.snippet)}</pre>
+        <div>
+          {/*Change to font awesome icons */}
+          <button value={snippet.id}>Edit</button>
+          <button value={snippet.id} onClick={deleteSnippet}>
+            Delete
+          </button>
+        </div>
       </div>
     );
   };
