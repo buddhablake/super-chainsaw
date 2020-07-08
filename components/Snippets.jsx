@@ -4,6 +4,16 @@ class SnippetCard extends React.Component {
     this.snippets = this.props.snippets;
   }
 
+  formatCode = (snippet) => {
+    const formattedSnippet = snippet
+      .replace(/\n/g, "<br>")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "	&gt;")
+      .replace(/\s+/g, " ")
+      .replace(/&lt;br &gt;/g, "<br>");
+    return snippet;
+  };
+
   render = () => {
     const { snippets } = this;
     return (
@@ -15,7 +25,9 @@ class SnippetCard extends React.Component {
               <h5>{snippet.author}</h5>
             </div>
             <p>{snippet.description}</p>
-            <p>{snippet.snippet}</p>
+            <pre className="prettyprint">
+              {this.formatCode(snippet.snippet)}
+            </pre>
           </div>
         ))}
       </div>
