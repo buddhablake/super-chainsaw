@@ -1,11 +1,11 @@
-class Header extends React.Component {
-  render = () => (
-    <nav>
-      <h3>SnipSnap</h3>
+function Header() {
+  return (
+    <nav className="nav-bar">
+      <h2>SnipSnap</h2>
       <form>
         <input type="text" placeholder="Search" />
       </form>
-      <button>add snippet</button>
+      <button type="button">add snippet</button>
     </nav>
   );
 }
