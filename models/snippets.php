@@ -73,5 +73,16 @@ class Snippets {
 
     return self::all();
   }
+
+  //DELETE A SNIPPET
+  static function delete($id){
+    $query = "DELETE FROM snippets WHERE id = $1";
+
+    $query_params = [$id];
+
+    pg_query_params($query, $query_params);
+
+    return self::all();
+  }
 }
  ?>
