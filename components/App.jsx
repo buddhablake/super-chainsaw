@@ -7,8 +7,9 @@ class App extends React.Component {
       author: null,
       snippet: null,
       description: null,
-      searchResults: [],
+      searchResults: null,
       filterValues: [],
+      noMatch: false,
     };
   }
 
@@ -79,21 +80,19 @@ class App extends React.Component {
 
   filterSnippets = (e) => {
     const userQuery = e.target.value;
-    console.log(userQuery);
 
     this.setState({
       filterValues: [],
       searchResults: [],
     });
-    console.log(this.state.snippets);
+
     this.state.snippets.filter((snippet) => {
       if (
         snippet.title.includes(userQuery) ||
         snippet.description.includes(userQuery)
       ) {
+        console.log("helpppppp");
         this.state.filterValues.push(snippet);
-      } else {
-        console.log("nope");
       }
     });
 
@@ -103,7 +102,7 @@ class App extends React.Component {
 
     if (userQuery === "") {
       this.setState({
-        searchResults: [],
+        searchResults: null,
       });
     }
   };
@@ -124,7 +123,7 @@ class App extends React.Component {
         <div className="container grid">
           {/*HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
 
-          {searchResults.length ? (
+          {searchResults ? (
             <div>
               {searchResults.map((snippet) => (
                 <SnippetCard
