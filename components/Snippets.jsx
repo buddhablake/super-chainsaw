@@ -41,7 +41,17 @@ class SnippetCard extends React.Component {
           <h5>{snippet.author}</h5>
         </div>
         <p>{snippet.description}</p>
-        <pre className="prettyprint">{snippet.snippet}</pre>
+        <pre className="prettyprint">
+          {snippet.snippet[0] === '<'
+            ? prettier.format(snippet.snippet, {
+                parser: 'html',
+                plugins: prettierPlugins
+              })
+            : prettier.format(snippet.snippet, {
+                parser: 'babel',
+                plugins: prettierPlugins
+              })}
+        </pre>
       </div>
     );
   };
