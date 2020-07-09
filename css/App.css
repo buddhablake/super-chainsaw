@@ -28,9 +28,18 @@ textarea {
   resize: none;
 }
 
+.add-form {
+  width: 300px;
+}
+
 .add-form > form {
   display: flex;
   flex-flow: column nowrap;
   justify-content: start;
   align-items: baseline;
+}
+
+.add-form > form * {
+  margin-bottom: 1em;
+  width: 100%;
 }
