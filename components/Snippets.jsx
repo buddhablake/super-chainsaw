@@ -91,7 +91,7 @@ class SnippetCard extends React.Component {
 
           {showEditForm ? (
             <EditSnippet
-              shouldUpdate={shouldUpdate}
+            
               snippet={snippet}
               changeTitle={this.props.changeTitle}
               changeAuthor={this.props.changeAuthor}
