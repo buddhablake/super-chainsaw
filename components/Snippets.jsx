@@ -1,9 +1,6 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      shouldUpdate: false
-    };
   }
 
   componentDidMount = () => {
@@ -11,13 +8,6 @@ class SnippetCard extends React.Component {
 
     console.log('snippets mounted!');
   };
-
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   console.log(prevState);
-  //   if (prevProps.snippet !== prevState.snippets[2]) {
-  //     console.log('snippet has changed');
-  //   }
-  // };
 
   formatCode = (snippet) => {
     const formattedSnippet = snippet
@@ -31,7 +21,6 @@ class SnippetCard extends React.Component {
   };
 
   checkCodeSnippets = (snippet) => {
-    console.log('sanitize code format:', snippet);
     if (snippet === null || snippet === undefined) {
       const snippet = {
         title: 'Null',
@@ -58,7 +47,6 @@ class SnippetCard extends React.Component {
   render = () => {
     console.log('rendering the Snippets!');
     const { snippets, deleteSnippet, updateSnippet } = this.props;
-    const { shouldUpdate } = this.state;
     const { snippet } = this.props;
     snippet.snippet = this.checkCodeSnippets(snippet.snippet);
     return (
@@ -82,7 +70,6 @@ class SnippetCard extends React.Component {
             Delete
           </button>
           <EditSnippet
-            shouldUpdate={shouldUpdate}
             snippet={snippet}
             changeTitle={this.props.changeTitle}
             changeAuthor={this.props.changeAuthor}
