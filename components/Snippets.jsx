@@ -1,14 +1,20 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
-    // this.snippet = this.props.snippet;
-    // this.snippets = this.props.snippets;
-    // this.deleteSnippet = this.props.deleteSnippet;
   }
 
   componentDidMount = () => {
     PR.prettyPrint();
+
+    console.log('snippets mounted!');
   };
+
+  // componentDidUpdate = (prevProps, prevState) => {
+  //   console.log(prevState);
+  //   if (prevProps.snippet !== prevState.snippets[2]) {
+  //     console.log('snippet has changed');
+  //   }
+  // };
 
   formatCode = (snippet) => {
     const formattedSnippet = snippet
@@ -21,9 +27,36 @@ class SnippetCard extends React.Component {
     return formattedSnippet;
   };
 
+  checkCodeSnippets = (snippet) => {
+    console.log('sanitize code format:', snippet);
+    if (snippet === null || snippet === undefined) {
+      const snippet = {
+        title: 'Null',
+        author: 'Nully Nullerson',
+        snippet: "const whoops = 'Got null here'",
+        description: 'Missing some data somewhere...'
+      };
+      return snippet;
+    }
+    if (snippet[0] === '<') {
+      snippet = prettier.format(snippet, {
+        parser: 'html',
+        plugins: prettierPlugins
+      });
+    } else {
+      snippet = prettier.format(snippet, {
+        parser: 'babel',
+        plugins: prettierPlugins
+      });
+    }
+    return snippet;
+  };
+
   render = () => {
-    console.log('rendering!');
-    const { snippet, snippets, deleteSnippet } = this.props;
+    console.log('rendering the Snippets!');
+    const { snippets, deleteSnippet, updateSnippet } = this.props;
+    const { snippet } = this.props;
+    snippet.snippet = this.checkCodeSnippets(snippet.snippet);
     return (
       <div>
         <div>
@@ -32,24 +65,24 @@ class SnippetCard extends React.Component {
         </div>
         <p>{snippet.description}</p>
 
-        <pre className="prettyprint">
-          {snippet.snippet[0] === '<'
-            ? prettier.format(snippet.snippet, {
-                parser: 'html',
-                plugins: prettierPlugins
-              })
-            : prettier.format(snippet.snippet, {
-                parser: 'babel',
-                plugins: prettierPlugins
-              })}
-        </pre>
+        <pre className="prettyprint">{snippet.snippet}</pre>
 
-        <div className="" edit-delete-btns>
+        <div className="edit-delete-btns">
           {/* Change to font awesome icons */}
-          <button value={snippet.id}>Edit</button>
-          <button value={snippet.id} onClick={deleteSnippet}>
+          <button type="button" value={snippet.id}>
+            Edit
+          </button>
+          <button type="button" value={snippet.id} onClick={deleteSnippet}>
             Delete
           </button>
+          <EditSnippet
+            snippet={snippet}
+            changeTitle={this.props.changeTitle}
+            changeAuthor={this.props.changeAuthor}
+            changeDescription={this.props.changeDescription}
+            changeSnippet={this.props.changeSnippet}
+            onUpdate={this.props.updateSnippet}
+          />
         </div>
       </div>
     );

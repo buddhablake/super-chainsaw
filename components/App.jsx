@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 class App extends React.Component {
   constructor() {
     super();
@@ -9,13 +10,15 @@ class App extends React.Component {
       description: null,
       searchResults: null,
       filterValues: [],
-      noMatch: false,
+
     };
   }
 
+  
   componentDidMount = async () => {
-    const response = await axios.get("/snippets");
-    console.log(response);
+
+    const response = await axios.get('/snippets');
+
     this.setState((state) => {
       state.snippets = response.data;
       return state;
@@ -64,11 +67,22 @@ class App extends React.Component {
       snippet,
       description,
     });
+
     console.log("Before setState", this.state);
-    this.setState({ snippets: response.data }, () => {
-      this.componentDidMount();
-    });
+    this.setState({ snippets: response.data });
   };
+
+  updateSnippet = async (e) => {
+    const thisSnippet = e.target.getAttribute('id')
+    await e.preventDefault()
+    const { title, author, snippet, description } = this.state;
+    const response = await axios.put(`/snippets/${thisSnippet}`, 
+    { title, author, snippet, description })
+    this.setState((state) => {
+      state.snippets = response.data;
+      return state;
+    });
+  }
 
   deleteSnippet = async (e) => {
     const response = await axios.delete(`/snippets/${e.target.value}`);
@@ -108,8 +122,10 @@ class App extends React.Component {
   };
 
   render = () => {
+
     const { snippets, searchResults } = this.state;
     console.log("rendering the App");
+
     return (
       <div>
         <Header filterSnippets={this.filterSnippets} />
@@ -121,6 +137,7 @@ class App extends React.Component {
           onCreate={this.createSnippet}
         />
         <div className="container grid">
+
           {/*HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
 
           {searchResults ? (
@@ -147,6 +164,24 @@ class App extends React.Component {
               ))}
             </div>
           )}
+
+          {snippets
+            ? snippets.map((snippet) => (
+              <SnippetCard
+                key={snippet.id}
+                snippet={snippet}
+                deleteSnippet={this.deleteSnippet}
+                shouldUpdate={shouldUpdate}
+                updateSnippet={this.updateSnippet}
+                changeTitle={this.changeTitle}
+                changeAuthor={this.changeAuthor}
+                changeDescription={this.changeDescription}
+                changeSnippet={this.changeSnippet}
+              />
+              
+              ))
+            : null}
+
         </div>
       </div>
     );
