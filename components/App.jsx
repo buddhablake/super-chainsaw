@@ -76,6 +76,7 @@ class App extends React.Component {
   };
 
   render = () => {
+    const { snippets } = this.state;
     console.log('rendering the App');
     return (
       <div>
@@ -87,9 +88,18 @@ class App extends React.Component {
           changeSnippet={this.changeSnippet}
           onCreate={this.createSnippet}
         />
-        {snippets ? (
-          <SnippetCard snippets={snippets} deleteSnippet={this.deleteSnippet} />
-        ) : null}
+        <div className="container grid">
+          {snippets
+            ? snippets.map((snippet) => (
+              <SnippetCard
+                  key={snippet.id}
+                  snippet={snippet}
+                  snippets={snippets}
+                  deleteSnippet={this.deleteSnippet}
+                />
+              ))
+            : null}
+        </div>
       </div>
     );
   };
