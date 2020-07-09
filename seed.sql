@@ -1,5 +1,6 @@
+\c postgres;
 DROP TABLE IF EXISTS snippets;
-DROP DATABASE snipsnap;
+DROP DATABASE IF EXISTS snipsnap;
 CREATE DATABASE snipsnap;
 \c snipsnap;
 CREATE TABLE snippets (
