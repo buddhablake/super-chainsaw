@@ -138,7 +138,7 @@ class App extends React.Component {
         />
         <div className="container grid">
 
-          {/*HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
+          {/* HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
 
           {searchResults ? (
             <div>
@@ -146,8 +146,12 @@ class App extends React.Component {
                 <SnippetCard
                   key={snippet.id}
                   snippet={snippet}
-                  snippets={snippets}
                   deleteSnippet={this.deleteSnippet}
+                  updateSnippet={this.updateSnippet}
+                  changeTitle={this.changeTitle}
+                  changeAuthor={this.changeAuthor}
+                  changeDescription={this.changeDescription}
+                  changeSnippet={this.changeSnippet}
                 />
               ))}{" "}
             </div>
@@ -158,30 +162,17 @@ class App extends React.Component {
                 <SnippetCard
                   key={snippet.id}
                   snippet={snippet}
-                  snippets={snippets}
                   deleteSnippet={this.deleteSnippet}
+                  updateSnippet={this.updateSnippet}
+                  changeTitle={this.changeTitle}
+                  changeAuthor={this.changeAuthor}
+                  changeDescription={this.changeDescription}
+                  changeSnippet={this.changeSnippet}
                 />
+              
               ))}
             </div>
           )}
-
-          {snippets
-            ? snippets.map((snippet) => (
-              <SnippetCard
-                key={snippet.id}
-                snippet={snippet}
-                deleteSnippet={this.deleteSnippet}
-                shouldUpdate={shouldUpdate}
-                updateSnippet={this.updateSnippet}
-                changeTitle={this.changeTitle}
-                changeAuthor={this.changeAuthor}
-                changeDescription={this.changeDescription}
-                changeSnippet={this.changeSnippet}
-              />
-              
-              ))
-            : null}
-
         </div>
       </div>
     );
