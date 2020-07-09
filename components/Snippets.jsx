@@ -18,7 +18,7 @@ class SnippetCard extends React.Component {
       .replace(/\s+/g, ' ')
       .replace(/&lt;br &gt;/g, '<br>');
     console.log(formattedSnippet);
-    return snippet;
+    return formattedSnippet;
   };
 
   render = () => {

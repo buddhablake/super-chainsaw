@@ -86,17 +86,9 @@ class App extends React.Component {
             this.changeSnippet)
           }
         />
-        <div className="container grid snippets">
-          {snippets.map((snippet) => {
-            return (
-              <SnippetCard
-                snippet={snippet}
-                snippets={snippets}
-                deleteSnippet={this.deleteSnippet}
-              />
-            );
-          })}
-        </div>
+        {snippets.length > 0 ? (
+          <SnippetCard snippets={snippets} deleteSnippet={this.deleteSnippet} />
+        ) : null}
       </div>
     );
   };
