@@ -7,7 +7,7 @@ class EditSnippet extends React.Component {
       changeAuthor,
       changeDescription,
       changeSnippet,
-      onUpdate
+      onUpdate,
     } = this.props;
     this.handleTitle = changeTitle;
     this.handleAuthor = changeAuthor;
@@ -40,6 +40,9 @@ class EditSnippet extends React.Component {
   render() {
     return (
       <div className="update-form">
+        <div className="close-form" onClick={this.props.toggleEditForm}>
+          X
+        </div>
         <form id={this.snippet.id} onSubmit={this.handleUpdate}>
           <input onKeyUp={this.handleTitle} type="text" placeholder="Title" />
           <input onKeyUp={this.handleAuthor} type="text" placeholder="Author" />

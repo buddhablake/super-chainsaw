@@ -1,52 +1,67 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
-  }
 
+    this.state = {
+      shouldUpdate: false,
+      showEditForm: false,
+    };
+
+  }
   componentDidMount = () => {
     PR.prettyPrint();
+  };
 
-    console.log('snippets mounted!');
+
+  toggleEditForm = () => {
+    this.setState({
+      showEditForm: !this.state.showEditForm,
+    });
   };
 
   formatCode = (snippet) => {
     const formattedSnippet = snippet
-      .replace(/\n/g, '<br>')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '	&gt;')
-      .replace(/\s+/g, ' ')
-      .replace(/&lt;br &gt;/g, '<br>');
+      .replace(/\n/g, "<br>")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "	&gt;")
+      .replace(/\s+/g, " ")
+      .replace(/&lt;br &gt;/g, "<br>");
 
     return formattedSnippet;
   };
 
   checkCodeSnippets = (snippet) => {
+
     if (snippet === null || snippet === undefined) {
       const snippet = {
-        title: 'Null',
-        author: 'Nully Nullerson',
+        title: "Null",
+        author: "Nully Nullerson",
         snippet: "const whoops = 'Got null here'",
-        description: 'Missing some data somewhere...'
+        description: "Missing some data somewhere...",
       };
       return snippet;
     }
-    if (snippet[0] === '<') {
+    if (snippet[0] === "<") {
       snippet = prettier.format(snippet, {
-        parser: 'html',
-        plugins: prettierPlugins
+        parser: "html",
+        plugins: prettierPlugins,
       });
     } else {
       snippet = prettier.format(snippet, {
-        parser: 'babel',
-        plugins: prettierPlugins
+        parser: "babel",
+        plugins: prettierPlugins,
       });
     }
     return snippet;
   };
 
   render = () => {
-    console.log('rendering the Snippets!');
+    console.log("rendering the Snippets!");
     const { snippets, deleteSnippet, updateSnippet } = this.props;
+
+    const { shouldUpdate, showEditForm } = this.state;
+    const { toggleEditForm } = this;
+
     const { snippet } = this.props;
     snippet.snippet = this.checkCodeSnippets(snippet.snippet);
     return (
@@ -63,20 +78,30 @@ class SnippetCard extends React.Component {
 
         <div className="edit-delete-btns">
           {/* Change to font awesome icons */}
-          <button type="button" value={snippet.id}>
+          <button
+            type="button"
+            value={snippet.id}
+            onClick={this.toggleEditForm}
+          >
             Edit
           </button>
           <button type="button" value={snippet.id} onClick={deleteSnippet}>
             Delete
           </button>
-          <EditSnippet
-            snippet={snippet}
-            changeTitle={this.props.changeTitle}
-            changeAuthor={this.props.changeAuthor}
-            changeDescription={this.props.changeDescription}
-            changeSnippet={this.props.changeSnippet}
-            onUpdate={this.props.updateSnippet}
-          />
+
+          {showEditForm ? (
+            <EditSnippet
+              shouldUpdate={shouldUpdate}
+              snippet={snippet}
+              changeTitle={this.props.changeTitle}
+              changeAuthor={this.props.changeAuthor}
+              changeDescription={this.props.changeDescription}
+              changeSnippet={this.props.changeSnippet}
+              onUpdate={this.props.updateSnippet}
+              toggleEditForm={toggleEditForm}
+            />
+          ) : null}
+
         </div>
       </div>
     );
