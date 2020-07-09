@@ -6,13 +6,17 @@ class SnippetCard extends React.Component {
     this.deleteSnippet = this.props.deleteSnippet;
   }
 
+  componentDidMount = () => {
+    PR.prettyPrint();
+  };
+
   formatCode = (snippet) => {
     const formattedSnippet = snippet
-      .replace(/\n/g, "<br>")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "	&gt;")
-      .replace(/\s+/g, " ")
-      .replace(/&lt;br &gt;/g, "<br>");
+      .replace(/\n/g, '<br>')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '	&gt;')
+      .replace(/\s+/g, ' ')
+      .replace(/&lt;br &gt;/g, '<br>');
     return snippet;
   };
 
@@ -27,7 +31,7 @@ class SnippetCard extends React.Component {
         <p>{snippet.description}</p>
         <pre className="prettyprint">{this.formatCode(snippet.snippet)}</pre>
         <div>
-          {/*Change to font awesome icons */}
+          {/* Change to font awesome icons */}
           <button value={snippet.id}>Edit</button>
           <button value={snippet.id} onClick={deleteSnippet}>
             Delete
