@@ -3,6 +3,7 @@ class SnippetCard extends React.Component {
     super(props);
     this.state = {
       shouldUpdate: false
+    };
   }
 
   componentDidMount = () => {
