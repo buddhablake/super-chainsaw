@@ -1,6 +1,24 @@
 <?php
-$dbconn = pg_connect("host=localhost dbname=snipsnap");
 
+
+$dbconn = null;
+if(getenv('DATABASE_URL')){
+    $connectionConfig = parse_url(getenv('DATABASE_URL'));
+    $host = $connectionConfig['host'];
+    $user = $connectionConfig['user'];
+    $password = $connectionConfig['pass'];
+    $port = $connectionConfig['port'];
+    $dbname = trim($connectionConfig['path'],'/');
+    $dbconn = pg_connect(
+        "host=".$host." ".
+        "user=".$user." ".
+        "password=".$password." ".
+        "port=".$port." ".
+        "dbname=".$dbname
+    );
+} else {
+  $dbconn = pg_connect("host=localhost dbname=snipsnap");
+}
 //==============
 //SNIPPET CLASS
 //==============
@@ -35,7 +53,7 @@ class Snippets {
   static function all(){
     $snippets = [];
 
-    $results = pg_query("SELECT * FROM snippets");
+    $results = pg_query("SELECT * FROM snippets ORDER BY id ASC");
 
     $row_object = pg_fetch_object($results);
     while($row_object){
@@ -85,4 +103,3 @@ class Snippets {
     return self::all();
   }
 }
- ?>

@@ -11,11 +11,13 @@ class App extends React.Component {
       searchResults: null,
       filterValues: [],
 
+      showCreateForm: false,
+
     };
   }
 
-  
   componentDidMount = async () => {
+
 
     const response = await axios.get('/snippets');
 
@@ -57,6 +59,13 @@ class App extends React.Component {
     });
   };
 
+  toggleCreateForm = () => {
+    console.log("hey");
+    this.setState({
+      showCreateForm: !this.state.showCreateForm,
+    });
+  };
+
   createSnippet = async (e) => {
     await e.preventDefault();
     const { title, author, snippet, description } = this.state;
@@ -69,20 +78,24 @@ class App extends React.Component {
     });
 
     console.log("Before setState", this.state);
-    this.setState({ snippets: response.data });
+    this.setState({ snippets: response.data, showCreateForm: false });
   };
 
   updateSnippet = async (e) => {
+
     const thisSnippet = e.target.getAttribute('id')
     await e.preventDefault()
+    const findCode = `code-snippet-${thisSnippet}`;
     const { title, author, snippet, description } = this.state;
     const response = await axios.put(`/snippets/${thisSnippet}`, 
     { title, author, snippet, description })
-    this.setState((state) => {
-      state.snippets = response.data;
-      return state;
-    });
+    this.setState( {snippets: response.data }, () => {
+      const element = document.getElementById(findCode)
+      element.innerHTML = PR.prettyPrintOne(element.innerHTML)
+    }
+    );
   }
+
 
   deleteSnippet = async (e) => {
     const response = await axios.delete(`/snippets/${e.target.value}`);
@@ -124,20 +137,27 @@ class App extends React.Component {
   render = () => {
 
     const { snippets, searchResults } = this.state;
+
     console.log("rendering the App");
 
     return (
       <div>
-        <Header filterSnippets={this.filterSnippets} />
-        <NewSnippet
-          changeTitle={this.changeTitle}
-          changeAuthor={this.changeAuthor}
-          changeDescription={this.changeDescription}
-          changeSnippet={this.changeSnippet}
-          onCreate={this.createSnippet}
+        <Header
+          filterSnippets={this.filterSnippets}
+          toggleCreateForm={this.toggleCreateForm}
         />
-        <div className="container grid">
+        {this.state.showCreateForm ? (
+          <NewSnippet
+            changeTitle={this.changeTitle}
+            changeAuthor={this.changeAuthor}
+            changeDescription={this.changeDescription}
+            changeSnippet={this.changeSnippet}
+            onCreate={this.createSnippet}
+            toggleCreateForm={this.toggleCreateForm}
+          />
+        ) : null}
 
+        <div className="container grid">
           {/* HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
 
           {searchResults ? (
@@ -157,7 +177,6 @@ class App extends React.Component {
             </div>
           ) : (
             <div>
-              <h1>HEY</h1>
               {snippets.map((snippet) => (
                 <SnippetCard
                   key={snippet.id}
@@ -169,7 +188,6 @@ class App extends React.Component {
                   changeDescription={this.changeDescription}
                   changeSnippet={this.changeSnippet}
                 />
-              
               ))}
             </div>
           )}
