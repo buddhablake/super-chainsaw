@@ -10,6 +10,7 @@ class SnippetCard extends React.Component {
     PR.prettyPrint();
   };
 
+
   formatCode = (snippet) => {
     const formattedSnippet = snippet
       .replace(/\n/g, '<br>')
@@ -17,26 +18,42 @@ class SnippetCard extends React.Component {
       .replace(/>/g, '	&gt;')
       .replace(/\s+/g, ' ')
       .replace(/&lt;br &gt;/g, '<br>');
-    return snippet;
+
+    return formattedSnippet;
+
   };
 
   render = () => {
-    const { snippets, deleteSnippet, snippet } = this;
+    console.log('rendering!');
+    const { snippet } = this.props;
     return (
-      <div key={snippet.id} className="snippet">
+      <div>
         <div>
           <h4>{snippet.title}</h4>
           <h5>{snippet.author}</h5>
         </div>
         <p>{snippet.description}</p>
-        <pre className="prettyprint">{this.formatCode(snippet.snippet)}</pre>
-        <div>
+
+        <pre className="prettyprint">
+          {snippet.snippet[0] === '<'
+            ? prettier.format(snippet.snippet, {
+                parser: 'html',
+                plugins: prettierPlugins
+              })
+            : prettier.format(snippet.snippet, {
+                parser: 'babel',
+                plugins: prettierPlugins
+              })}
+        </pre>
+       
+      <div className=""edit-delete-btns>
           {/* Change to font awesome icons */}
           <button value={snippet.id}>Edit</button>
           <button value={snippet.id} onClick={deleteSnippet}>
             Delete
           </button>
         </div>
+</div>
       </div>
     );
   };
