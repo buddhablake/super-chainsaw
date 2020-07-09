@@ -91,12 +91,12 @@ class App extends React.Component {
         <div className="container grid">
           {snippets
             ? snippets.map((snippet) => (
-              <SnippetCard
-                  key={snippet.id}
-                  snippet={snippet}
-                  snippets={snippets}
-                  deleteSnippet={this.deleteSnippet}
-                />
+                <SnippetCard
+                key={snippet.id}
+                snippet={snippet}
+                snippets={snippets}
+                deleteSnippet={this.deleteSnippet}
+              />
               ))
             : null}
         </div>
