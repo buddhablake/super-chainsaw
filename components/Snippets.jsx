@@ -1,8 +1,10 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      shouldUpdate: false,
+    };
   }
-
   componentDidMount = () => {
     PR.prettyPrint();
 
@@ -55,6 +57,7 @@ class SnippetCard extends React.Component {
   render = () => {
     console.log("rendering the Snippets!");
     const { snippets, deleteSnippet, updateSnippet } = this.props;
+    const { shouldUpdate } = this.state;
     const { snippet } = this.props;
     snippet.snippet = this.checkCodeSnippets(snippet.snippet);
     return (
@@ -65,7 +68,9 @@ class SnippetCard extends React.Component {
         </div>
         <p>{snippet.description}</p>
 
-        <pre className="prettyprint">{snippet.snippet}</pre>
+        <pre id={`code-snippet-${snippet.id}`} className="prettyprint">
+          {snippet.snippet}
+        </pre>
 
         <div className="edit-delete-btns">
           {/* Change to font awesome icons */}
@@ -76,6 +81,7 @@ class SnippetCard extends React.Component {
             Delete
           </button>
           <EditSnippet
+            shouldUpdate={shouldUpdate}
             snippet={snippet}
             changeTitle={this.props.changeTitle}
             changeAuthor={this.props.changeAuthor}
