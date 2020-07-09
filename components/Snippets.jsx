@@ -6,7 +6,7 @@ class SnippetCard extends React.Component {
   componentDidMount = () => {
     PR.prettyPrint();
 
-    console.log('snippets mounted!');
+    console.log("snippets mounted!");
   };
 
   // componentDidUpdate = (prevProps, prevState) => {
@@ -18,42 +18,42 @@ class SnippetCard extends React.Component {
 
   formatCode = (snippet) => {
     const formattedSnippet = snippet
-      .replace(/\n/g, '<br>')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '	&gt;')
-      .replace(/\s+/g, ' ')
-      .replace(/&lt;br &gt;/g, '<br>');
+      .replace(/\n/g, "<br>")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "	&gt;")
+      .replace(/\s+/g, " ")
+      .replace(/&lt;br &gt;/g, "<br>");
 
     return formattedSnippet;
   };
 
   checkCodeSnippets = (snippet) => {
-    console.log('sanitize code format:', snippet);
+    console.log("sanitize code format:", snippet);
     if (snippet === null || snippet === undefined) {
       const snippet = {
-        title: 'Null',
-        author: 'Nully Nullerson',
+        title: "Null",
+        author: "Nully Nullerson",
         snippet: "const whoops = 'Got null here'",
-        description: 'Missing some data somewhere...'
+        description: "Missing some data somewhere...",
       };
       return snippet;
     }
-    if (snippet[0] === '<') {
+    if (snippet[0] === "<") {
       snippet = prettier.format(snippet, {
-        parser: 'html',
-        plugins: prettierPlugins
+        parser: "html",
+        plugins: prettierPlugins,
       });
     } else {
       snippet = prettier.format(snippet, {
-        parser: 'babel',
-        plugins: prettierPlugins
+        parser: "babel",
+        plugins: prettierPlugins,
       });
     }
     return snippet;
   };
 
   render = () => {
-    console.log('rendering the Snippets!');
+    console.log("rendering the Snippets!");
     const { snippets, deleteSnippet, updateSnippet } = this.props;
     const { snippet } = this.props;
     snippet.snippet = this.checkCodeSnippets(snippet.snippet);
