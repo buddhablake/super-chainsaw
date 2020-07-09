@@ -53,7 +53,7 @@ class Snippets {
   static function all(){
     $snippets = [];
 
-    $results = pg_query("SELECT * FROM snippets");
+    $results = pg_query("SELECT * FROM snippets ORDER BY id ASC");
 
     $row_object = pg_fetch_object($results);
     while($row_object){
@@ -103,4 +103,3 @@ class Snippets {
     return self::all();
   }
 }
- ?>

@@ -10,12 +10,16 @@ class App extends React.Component {
       description: null,
       searchResults: null,
       filterValues: [],
+
       showCreateForm: false,
+
     };
   }
 
   componentDidMount = async () => {
-    const response = await axios.get("/snippets");
+
+
+    const response = await axios.get('/snippets');
 
     this.setState((state) => {
       state.snippets = response.data;
@@ -78,20 +82,20 @@ class App extends React.Component {
   };
 
   updateSnippet = async (e) => {
-    const thisSnippet = e.target.getAttribute("id");
-    await e.preventDefault();
+
+    const thisSnippet = e.target.getAttribute('id')
+    await e.preventDefault()
+    const findCode = `code-snippet-${thisSnippet}`;
     const { title, author, snippet, description } = this.state;
-    const response = await axios.put(`/snippets/${thisSnippet}`, {
-      title,
-      author,
-      snippet,
-      description,
-    });
-    this.setState((state) => {
-      state.snippets = response.data;
-      return state;
-    });
-  };
+    const response = await axios.put(`/snippets/${thisSnippet}`, 
+    { title, author, snippet, description })
+    this.setState( {snippets: response.data }, () => {
+      const element = document.getElementById(findCode)
+      element.innerHTML = PR.prettyPrintOne(element.innerHTML)
+    }
+    );
+  }
+
 
   deleteSnippet = async (e) => {
     const response = await axios.delete(`/snippets/${e.target.value}`);
@@ -131,7 +135,9 @@ class App extends React.Component {
   };
 
   render = () => {
+
     const { snippets, searchResults } = this.state;
+
     console.log("rendering the App");
 
     return (
