@@ -6,6 +6,10 @@ class SnippetCard extends React.Component {
     this.deleteSnippet = this.props.deleteSnippet;
   }
 
+  componentDidMount = () => {
+    PR.prettyPrint();
+  };
+
   formatCode = (snippet) => {
     const formattedSnippet = snippet
       .replace(/\n/g, '<br>')
