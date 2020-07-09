@@ -6,13 +6,13 @@ class NewSnippet extends React.Component {
       changeAuthor,
       changeDescription,
       changeSnippet,
-      createSnippet
+      onCreate
     } = this.props;
-    this.changeTitle = changeTitle;
-    this.changeAuthor = changeAuthor;
-    this.changeDescription = changeDescription;
-    this.changeSnippet = changeSnippet;
-    this.createSnippet = createSnippet;
+    this.handleTitle = changeTitle;
+    this.handleAuthor = changeAuthor;
+    this.handleDescription = changeDescription;
+    this.handleSnippet = changeSnippet;
+    this.handleCreateSnippet = onCreate;
   }
 
   handleTitle = (e) => {
@@ -31,15 +31,14 @@ class NewSnippet extends React.Component {
     this.changeSnippet(e);
   };
 
-  handleCreate = (e) => {
-    e.preventDefault();
-    this.createSnippet();
+  handleCreateSnippet = (e) => {
+    this.createSnippet(e);
   };
 
   render() {
     return (
       <div className="add-form">
-        <form onSubmit={this.handleCreate}>
+        <form onSubmit={this.handleCreateSnippet}>
           <input onKeyUp={this.handleTitle} type="text" placeholder="Title" />
           <input onKeyUp={this.handleAuthor} type="text" placeholder="Author" />
           <textarea

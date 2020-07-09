@@ -10,6 +10,16 @@ class SnippetCard extends React.Component {
     PR.prettyPrint();
   };
 
+  shouldComponentUpdate = (nextProps) => {
+    if (nextProps.snippets.length !== this.snippets.length) {
+      console.log('nextProps:', nextProps);
+      console.log('old props', this.snippets);
+      return true;
+    }
+    return false;
+  };
+
+  // Because of how browser renders code in pre tags, we likely don't need this function
   formatCode = (snippet) => {
     const formattedSnippet = snippet
       .replace(/\n/g, '<br>')
@@ -22,7 +32,9 @@ class SnippetCard extends React.Component {
   };
 
   render = () => {
+    console.log('rendering!');
     const { snippets } = this;
+    console.log('snippets inside Snippets class', snippets);
     return (
       <div className="container grid">
         {snippets.map((snippet) => (

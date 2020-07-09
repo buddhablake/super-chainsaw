@@ -2,7 +2,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      snippets: [],
+      snippets: null,
       title: null,
       author: null,
       snippet: null,
@@ -51,17 +51,19 @@ class App extends React.Component {
     });
   };
 
-  createSnippet = async () => {
+  createSnippet = async (e) => {
+    await e.preventDefault();
     const { title, author, snippet, description } = this.state;
+    const { snippets } = this.state;
     const response = await axios.post('/snippets', {
       title,
       author,
       snippet,
       description
     });
-    this.setState((state) => {
-      state.snippets = response.data;
-      return state;
+    console.log('Before setState', this.state);
+    this.setState({ snippets: response.data }, () => {
+      this.componentDidMount();
     });
   };
 
@@ -74,19 +76,18 @@ class App extends React.Component {
   };
 
   render = () => {
-    const { snippets } = this.state;
+    console.log('rendering the App');
     return (
       <div>
         <Header />
         <NewSnippet
-          dataChanges={
-            (this.changeTitle,
-            this.changeAuthor,
-            this.changeDescription,
-            this.changeSnippet)
-          }
+          changeTitle={this.changeTitle}
+          changeAuthor={this.changeAuthor}
+          changeDescription={this.changeDescription}
+          changeSnippet={this.changeSnippet}
+          onCreate={this.createSnippet}
         />
-        {snippets.length > 0 ? (
+        {snippets ? (
           <SnippetCard snippets={snippets} deleteSnippet={this.deleteSnippet} />
         ) : null}
       </div>
