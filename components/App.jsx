@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 class App extends React.Component {
   constructor() {
     super();
@@ -6,13 +7,14 @@ class App extends React.Component {
       title: null,
       author: null,
       snippet: null,
-      description: null
+      description: null,
+      shouldUpdate: false
     };
   }
 
+  
   componentDidMount = async () => {
     const response = await axios.get('/snippets');
-    console.log(response);
     this.setState((state) => {
       state.snippets = response.data;
       return state;
@@ -61,11 +63,23 @@ class App extends React.Component {
       snippet,
       description
     });
-    console.log('Before setState', this.state);
-    this.setState({ snippets: response.data }, () => {
-      this.componentDidMount();
+    this.setState((state) => {
+      state.snippets = response.data
+      return state
     });
   };
+
+  updateSnippet = async (e) => {
+    const thisSnippet = e.target.getAttribute('id')
+    await e.preventDefault()
+    const { title, author, snippet, description } = this.state;
+    const response = await axios.put(`/snippets/${thisSnippet}`, 
+    { title, author, snippet, description })
+    this.setState((state) => {
+      state.snippets = response.data;
+      return state;
+    });
+  }
 
   deleteSnippet = async (e) => {
     const response = await axios.delete(`/snippets/${e.target.value}`);
@@ -76,7 +90,7 @@ class App extends React.Component {
   };
 
   render = () => {
-    const { snippets } = this.state;
+    const { snippets, shouldUpdate} = this.state;
     console.log('rendering the App');
     return (
       <div>
@@ -91,12 +105,18 @@ class App extends React.Component {
         <div className="container grid">
           {snippets
             ? snippets.map((snippet) => (
-                <SnippetCard
+              <SnippetCard
                 key={snippet.id}
                 snippet={snippet}
-                snippets={snippets}
                 deleteSnippet={this.deleteSnippet}
+                shouldUpdate={shouldUpdate}
+                updateSnippet={this.updateSnippet}
+                changeTitle={this.changeTitle}
+                changeAuthor={this.changeAuthor}
+                changeDescription={this.changeDescription}
+                changeSnippet={this.changeSnippet}
               />
+              
               ))
             : null}
         </div>
