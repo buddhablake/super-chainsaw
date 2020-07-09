@@ -10,16 +10,7 @@ class SnippetCard extends React.Component {
     PR.prettyPrint();
   };
 
-  // shouldComponentUpdate = (nextProps) => {
-  //   if (nextProps.snippets.length !== this.snippets.length) {
-  //     console.log('nextProps:', nextProps);
-  //     console.log('old props', this.snippets);
-  //     return true;
-  //   }
-  //   return false;
-  // };
 
-  // Because of how browser renders code in pre tags, we likely don't need this function
   formatCode = (snippet) => {
     const formattedSnippet = snippet
       .replace(/\n/g, '<br>')
@@ -27,8 +18,9 @@ class SnippetCard extends React.Component {
       .replace(/>/g, '	&gt;')
       .replace(/\s+/g, ' ')
       .replace(/&lt;br &gt;/g, '<br>');
-    console.log(formattedSnippet);
+
     return formattedSnippet;
+
   };
 
   render = () => {
@@ -41,6 +33,7 @@ class SnippetCard extends React.Component {
           <h5>{snippet.author}</h5>
         </div>
         <p>{snippet.description}</p>
+
         <pre className="prettyprint">
           {snippet.snippet[0] === '<'
             ? prettier.format(snippet.snippet, {
@@ -52,6 +45,15 @@ class SnippetCard extends React.Component {
                 plugins: prettierPlugins
               })}
         </pre>
+       
+      <div className=""edit-delete-btns>
+          {/* Change to font awesome icons */}
+          <button value={snippet.id}>Edit</button>
+          <button value={snippet.id} onClick={deleteSnippet}>
+            Delete
+          </button>
+        </div>
+</div>
       </div>
     );
   };
