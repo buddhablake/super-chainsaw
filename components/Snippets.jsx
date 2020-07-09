@@ -1,20 +1,23 @@
 class SnippetCard extends React.Component {
   constructor(props) {
     super(props);
-  }
 
+    this.state = {
+      shouldUpdate: false,
+      showEditForm: false,
+    };
+
+  }
   componentDidMount = () => {
     PR.prettyPrint();
-
-    console.log("snippets mounted!");
   };
 
-  // componentDidUpdate = (prevProps, prevState) => {
-  //   console.log(prevState);
-  //   if (prevProps.snippet !== prevState.snippets[2]) {
-  //     console.log('snippet has changed');
-  //   }
-  // };
+
+  toggleEditForm = () => {
+    this.setState({
+      showEditForm: !this.state.showEditForm,
+    });
+  };
 
   formatCode = (snippet) => {
     const formattedSnippet = snippet
@@ -28,7 +31,7 @@ class SnippetCard extends React.Component {
   };
 
   checkCodeSnippets = (snippet) => {
-    console.log("sanitize code format:", snippet);
+
     if (snippet === null || snippet === undefined) {
       const snippet = {
         title: "Null",
@@ -55,6 +58,10 @@ class SnippetCard extends React.Component {
   render = () => {
     console.log("rendering the Snippets!");
     const { snippets, deleteSnippet, updateSnippet } = this.props;
+
+    const { shouldUpdate, showEditForm } = this.state;
+    const { toggleEditForm } = this;
+
     const { snippet } = this.props;
     snippet.snippet = this.checkCodeSnippets(snippet.snippet);
     return (
@@ -65,24 +72,36 @@ class SnippetCard extends React.Component {
         </div>
         <p>{snippet.description}</p>
 
-        <pre className="prettyprint">{snippet.snippet}</pre>
+        <pre id={`code-snippet-${snippet.id}`} className="prettyprint">
+          {snippet.snippet}
+        </pre>
 
         <div className="edit-delete-btns">
           {/* Change to font awesome icons */}
-          <button type="button" value={snippet.id}>
+          <button
+            type="button"
+            value={snippet.id}
+            onClick={this.toggleEditForm}
+          >
             Edit
           </button>
           <button type="button" value={snippet.id} onClick={deleteSnippet}>
             Delete
           </button>
-          <EditSnippet
-            snippet={snippet}
-            changeTitle={this.props.changeTitle}
-            changeAuthor={this.props.changeAuthor}
-            changeDescription={this.props.changeDescription}
-            changeSnippet={this.props.changeSnippet}
-            onUpdate={this.props.updateSnippet}
-          />
+
+          {showEditForm ? (
+            <EditSnippet
+            
+              snippet={snippet}
+              changeTitle={this.props.changeTitle}
+              changeAuthor={this.props.changeAuthor}
+              changeDescription={this.props.changeDescription}
+              changeSnippet={this.props.changeSnippet}
+              onUpdate={this.props.updateSnippet}
+              toggleEditForm={toggleEditForm}
+            />
+          ) : null}
+
         </div>
       </div>
     );

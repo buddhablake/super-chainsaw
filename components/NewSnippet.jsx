@@ -6,7 +6,7 @@ class NewSnippet extends React.Component {
       changeAuthor,
       changeDescription,
       changeSnippet,
-      onCreate
+      onCreate,
     } = this.props;
     this.handleTitle = changeTitle;
     this.handleAuthor = changeAuthor;
@@ -38,6 +38,9 @@ class NewSnippet extends React.Component {
   render() {
     return (
       <div className="add-form">
+        <div className="close-form" onClick={this.props.toggleCreateForm}>
+          X
+        </div>
         <form onSubmit={this.handleCreateSnippet}>
           <input onKeyUp={this.handleTitle} type="text" placeholder="Title" />
           <input onKeyUp={this.handleAuthor} type="text" placeholder="Author" />
