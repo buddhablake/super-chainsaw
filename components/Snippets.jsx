@@ -44,7 +44,7 @@ class SnippetCard extends React.Component {
               })}
         </pre>
 
-        <div className="" edit-delete-btns>
+        <div className="edit-delete-btns">
           {/* Change to font awesome icons */}
           <button value={snippet.id}>Edit</button>
           <button value={snippet.id} onClick={deleteSnippet}>
