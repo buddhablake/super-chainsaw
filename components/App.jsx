@@ -3,18 +3,22 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      snippets: null,
+      snippets: [],
       title: null,
       author: null,
       snippet: null,
       description: null,
-      shouldUpdate: false
+      searchResults: null,
+      filterValues: [],
+
     };
   }
 
   
   componentDidMount = async () => {
+
     const response = await axios.get('/snippets');
+
     this.setState((state) => {
       state.snippets = response.data;
       return state;
@@ -57,16 +61,15 @@ class App extends React.Component {
     await e.preventDefault();
     const { title, author, snippet, description } = this.state;
     const { snippets } = this.state;
-    const response = await axios.post('/snippets', {
+    const response = await axios.post("/snippets", {
       title,
       author,
       snippet,
-      description
+      description,
     });
-    this.setState((state) => {
-      state.snippets = response.data
-      return state
-    });
+
+    console.log("Before setState", this.state);
+    this.setState({ snippets: response.data });
   };
 
   updateSnippet = async (e) => {
@@ -89,12 +92,43 @@ class App extends React.Component {
     });
   };
 
+  filterSnippets = (e) => {
+    const userQuery = e.target.value;
+
+    this.setState({
+      filterValues: [],
+      searchResults: [],
+    });
+
+    this.state.snippets.filter((snippet) => {
+      if (
+        snippet.title.includes(userQuery) ||
+        snippet.description.includes(userQuery)
+      ) {
+        console.log("helpppppp");
+        this.state.filterValues.push(snippet);
+      }
+    });
+
+    this.setState({
+      searchResults: this.state.filterValues,
+    });
+
+    if (userQuery === "") {
+      this.setState({
+        searchResults: null,
+      });
+    }
+  };
+
   render = () => {
-    const { snippets, shouldUpdate} = this.state;
-    console.log('rendering the App');
+
+    const { snippets, searchResults } = this.state;
+    console.log("rendering the App");
+
     return (
       <div>
-        <Header />
+        <Header filterSnippets={this.filterSnippets} />
         <NewSnippet
           changeTitle={this.changeTitle}
           changeAuthor={this.changeAuthor}
@@ -103,6 +137,34 @@ class App extends React.Component {
           onCreate={this.createSnippet}
         />
         <div className="container grid">
+
+          {/*HANDLES THE RENDERING OF ALL SNIPPETS AND/OR FILTERED SNIPPETS*/}
+
+          {searchResults ? (
+            <div>
+              {searchResults.map((snippet) => (
+                <SnippetCard
+                  key={snippet.id}
+                  snippet={snippet}
+                  snippets={snippets}
+                  deleteSnippet={this.deleteSnippet}
+                />
+              ))}{" "}
+            </div>
+          ) : (
+            <div>
+              <h1>HEY</h1>
+              {snippets.map((snippet) => (
+                <SnippetCard
+                  key={snippet.id}
+                  snippet={snippet}
+                  snippets={snippets}
+                  deleteSnippet={this.deleteSnippet}
+                />
+              ))}
+            </div>
+          )}
+
           {snippets
             ? snippets.map((snippet) => (
               <SnippetCard
@@ -119,10 +181,11 @@ class App extends React.Component {
               
               ))
             : null}
+
         </div>
       </div>
     );
   };
 }
 
-ReactDOM.render(<App />, document.querySelector('main'));
+ReactDOM.render(<App />, document.querySelector("main"));
