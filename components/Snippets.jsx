@@ -13,6 +13,7 @@ class SnippetCard extends React.Component {
       .replace(/>/g, '	&gt;')
       .replace(/\s+/g, ' ')
       .replace(/&lt;br &gt;/g, '<br>');
+    console.log(formattedSnippet);
     return snippet;
   };
 
@@ -27,7 +28,7 @@ class SnippetCard extends React.Component {
               <h5>{snippet.author}</h5>
             </div>
             <p>{snippet.description}</p>
-            <p>{snippet.snippet}</p>
+            <pre className="prettyprint">{snippet.snippet}</pre>
           </div>
         ))}
       </div>
