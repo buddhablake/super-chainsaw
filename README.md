@@ -1,8 +1,10 @@
 # SnipSnap App
 
+The app is deployed on Heroku at https://snipsnapapp.herokuapp.com/.
+
 ## What it does
 
-This app allows fellow devs to view their favorite re-usable code snippets. Devs can also add, udpate, and delete snippets.
+This app allows fellow devs to view their favorite re-usable code snippets. Devs can also add, update, and delete snippets.
 
 ## Tech Used
 
